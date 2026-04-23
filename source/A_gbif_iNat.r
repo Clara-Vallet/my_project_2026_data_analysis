@@ -108,8 +108,8 @@ for (nom in liste) {                                              # création d'
   inat_raw <- get_inat_obs(
     maxresults = 5000,                                            # limitation du nombre d'occurences téléchargées 
     query = nom,                                                  # nom espèce à rechercher (Coccinella septempunctata)
-    place_id = "switzerland")                                     # restriction aux occurences situées en suisse
-
+    place_id = "switzerland",                                     # restriction aux occurences situées en suisse
+  )
 
 # transformation des points iNaturalist en objets spatiaux
   data_spatiale_inat <- st_as_sf(
@@ -171,11 +171,16 @@ table(full_data$source, useNA = "ifany")                          # calcul N(gbi
 table(full_data$species)                                          # pas d'espèce parasite (e.g. papillon)
 
 # vérification des dates
-summary(full_data$date_obs)                                       # min: 1880; max: 2026; NA=210 
+summary(full_data$date_obs)                                       # grand pannel temporel (1880-2026) pour étude temps
 
-# suppression des observations sans dates vides pour éviter les problèmes d'analyse
+# suppression des observations sans dates vides pour éviter les problèmes d'analyse (NA=210)
 full_data <- full_data %>% filter(!is.na(date_obs))
 summary(full_data$date_obs)                                       # NA=0
+
+# suppression des doublons car gBif synchronisent souvent les données avec iNat
+full_data_unique <- full_data %>%
+  distinct(species,latitude,longitude,date_obs,.keep_all = TRUE)
+table(full_data$source, useNA = "ifany")                          # calcul N(gbif)=7129, N(iNat)=4188  & NA=0
 
 # graphique final 
 x11()                                                             # ouvre sur une fenêtre à part (mac)    
