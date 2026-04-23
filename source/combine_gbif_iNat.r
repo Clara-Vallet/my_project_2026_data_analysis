@@ -31,11 +31,6 @@ invasive_species <- "Harmonia axyridis"                           # espèce inva
 # nombre maximum de points à télécharger des bases de données iNat et Gbif
 gbif_limit <- 5000                                                # parfois modifié directement de les scripts ci-dessous
 
-# filtre de période 
-date_start <- as.Date("198-01-01")                                # début importation des coccinelles invasives
-date_end   <- as.Date("2026-02-31")                               # le plus récent possible 
-
-
 
 #####################################################  Carte: Suisse   #####################################################
 
